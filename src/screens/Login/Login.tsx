@@ -14,7 +14,7 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../../assets/images/Logo.svg")}
+        source={require("../../../assets/images/AutoDev.png")}
         style={styles.logo}
       />
       <View style={styles.divForm}>
@@ -68,8 +68,10 @@ const styles = StyleSheet.create({
     gap: 30,
   },
   logo: {
+    width: "100%",
+    height: 100,
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 0,
   },
   button1: {
     backgroundColor: "#1F41BB",
@@ -83,16 +85,16 @@ const styles = StyleSheet.create({
     borderColor: "grey",
   },
   textInput: {
-    padding: 20,
-    borderColor: "black",
-    borderWidth: 2,
+    padding: 15,
+    borderColor: "grey",
+    borderWidth: 1,
     borderRadius: 13,
     backgroundColor: "white",
   },
   text: {
     color: "black",
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 500,
   },
   textButton: {
     color: "white",

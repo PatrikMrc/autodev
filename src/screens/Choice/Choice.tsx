@@ -15,15 +15,10 @@ export default function Choice() {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/images/backgroundImage.svg")}
+        source={require("../../../assets/images/background.png")}
+        resizeMode="cover"
         style={styles.backgroundImage}
       >
-        <View>
-          <Image
-            source={require("../../../assets/images/Logo.svg")}
-            style={styles.logo}
-          />
-        </View>
         <View style={styles.containerbuttons}>
           <TouchableOpacity
             onPress={() => navigation.navigate("Login")}
@@ -57,10 +52,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",
-    top: "60%",
+    top: "80%",
   },
   button1: {
-    backgroundColor: "#007BFF",
+    backgroundColor: "#1F41BB",
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
@@ -89,12 +84,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-  },
-  logo: {
-    top: 200,
-    position: "relative",
-    width: "100%",
-    alignSelf: "center",
-    resizeMode: "cover",
   },
 });
