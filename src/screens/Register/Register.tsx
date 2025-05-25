@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
+    backgroundColor: "white",
   },
   logo: {
     bottom: 100,

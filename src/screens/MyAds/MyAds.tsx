@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 
-export default function Ads() {
+export default function MyAds() {
   return (
     <View style={styles.container}>
       <Text>Ads</Text>

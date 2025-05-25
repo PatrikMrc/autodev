@@ -28,13 +28,11 @@ export default function Login() {
         </View>
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button1}>
-          <Text
-            style={styles.textButton}
-            onPress={() => navigation.navigate("Home")}
-          >
-            Entrar
-          </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Home")}
+          style={styles.button1}
+        >
+          <Text style={styles.textButton}>Entrar</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     marginBottom: 20,
-    marginTop: 0,
+    marginTop: 50,
   },
   button1: {
     backgroundColor: "#1F41BB",

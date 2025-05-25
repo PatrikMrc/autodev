@@ -7,6 +7,7 @@ import Login from "../src/screens/Login/Login";
 import Register from "../src/screens/Register/Register";
 import Splash from "../src/screens/Splash/Splash";
 import Home from "../src/screens/Home/Home";
+import TabRoutes from "./tab.routes";
 
 export default function StackRoutes() {
   return (
@@ -14,7 +15,7 @@ export default function StackRoutes() {
       screenOptions={{ headerShown: false }}
       initialRouteName="Choice"
     >
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Home" component={TabRoutes} />
       <Stack.Screen name="Splash" component={Splash} />
       <Stack.Screen name="Choice" component={Choice} />
       <Stack.Screen name="Login" component={Login} />

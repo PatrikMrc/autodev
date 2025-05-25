@@ -12,7 +12,7 @@ import React from "react";
 export default function App() {
   return (
     <NavigationIndependentTree>
-      <StatusBar barStyle="light-content" backgroundColor="" />
+      <StatusBar barStyle="dark-content" backgroundColor="" />
       <StackRoutes />
     </NavigationIndependentTree>
   );
