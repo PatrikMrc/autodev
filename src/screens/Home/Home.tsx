@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "expo-router";
 
 export default function Home() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <View>
@@ -10,14 +13,20 @@ export default function Home() {
         />
       </View>
       <View style={styles.containerImage}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AdsMoto")}
+          style={styles.button}
+        >
           <Image
             style={styles.image}
             source={require("@/assets/images/moto.png")}
           />
           <Text>Anúncios De Motos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("AdsCarro")}
+          style={styles.button}
+        >
           <Image
             style={styles.image}
             source={require("@/assets/images/carro.png")}
@@ -26,14 +35,20 @@ export default function Home() {
         </TouchableOpacity>
       </View>
       <View style={styles.containerImage}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Despachant")}
+          style={styles.button}
+        >
           <Image
             style={styles.image}
             source={require("@/assets/images/despachante.png")}
           />
           <Text>Despachantes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Mecanic")}
+          style={styles.button}
+        >
           <Image
             style={styles.image}
             source={require("@/assets/images/mecanico.png")}
