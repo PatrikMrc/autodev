@@ -17,6 +17,7 @@ export default function Login() {
         source={require("../../../assets/images/AutoDev.png")}
         style={styles.logo}
       />
+      <Text style={styles.textLogin}>Faça Login Aqui!</Text>
       <View style={styles.divForm}>
         <View style={styles.containerForm}>
           <Text style={styles.text}>E-Mail</Text>
@@ -69,7 +70,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     marginBottom: 20,
-    marginTop: 50,
+    marginTop: 100,
+  },
+  textLogin: {
+    fontSize: 30,
+    fontWeight: 600,
+    color: "grey",
+    marginTop: 120,
   },
   button1: {
     backgroundColor: "#1F41BB",

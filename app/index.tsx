@@ -4,7 +4,6 @@ import {
   useNavigationIndependentTree,
 } from "@react-navigation/native";
 
-import TabRoutes from "../routes/tab.routes";
 import StackRoutes from "../routes/stack.routes";
 
 import React from "react";
