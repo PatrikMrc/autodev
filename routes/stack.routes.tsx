@@ -14,19 +14,64 @@ import Mecanic from "@/src/screens/Mecanic/Mecanic";
 
 export default function StackRoutes() {
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="Choice"
-    >
-      <Stack.Screen name="Home" component={TabRoutes} />
-      <Stack.Screen name="Splash" component={Splash} />
-      <Stack.Screen name="Choice" component={Choice} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="AdsMoto" component={AdsMoto} />
-      <Stack.Screen name="AdsCar" component={AdsCar} />
-      <Stack.Screen name="Despachant" component={Despachant} />
-      <Stack.Screen name="Mecanic" component={Mecanic} />
+    <Stack.Navigator initialRouteName="Choice">
+      <Stack.Screen
+        name="Home"
+        options={{ headerShown: false }}
+        component={TabRoutes}
+      />
+      <Stack.Screen
+        name="Splash"
+        options={{ headerShown: false }}
+        component={Splash}
+      />
+      <Stack.Screen
+        name="Choice"
+        options={{ headerShown: false }}
+        component={Choice}
+      />
+      <Stack.Screen
+        name="Login"
+        options={{ headerShown: false }}
+        component={Login}
+      />
+      <Stack.Screen
+        name="Register"
+        options={{ headerShown: false }}
+        component={Register}
+      />
+      <Stack.Screen
+        name="AdsMoto"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={AdsMoto}
+      />
+      <Stack.Screen
+        name="AdsCar"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={AdsCar}
+      />
+      <Stack.Screen
+        name="Despachant"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={Despachant}
+      />
+      <Stack.Screen
+        name="Mecanic"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={Mecanic}
+      />
     </Stack.Navigator>
   );
 }

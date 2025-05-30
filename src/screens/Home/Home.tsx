@@ -24,7 +24,7 @@ export default function Home() {
           <Text>Anúncios De Motos</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate("AdsCarro")}
+          onPress={() => navigation.navigate("AdsCar")}
           style={styles.button}
         >
           <Image

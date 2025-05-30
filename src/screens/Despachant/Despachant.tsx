@@ -67,11 +67,12 @@ export default function Despachant() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 20,
+    backgroundColor: "white",
   },
 });
