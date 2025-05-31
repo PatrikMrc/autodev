@@ -1,23 +1,18 @@
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function ListPersonals(props: {
-  image: number;
-  name: string;
-  age: number;
-  star: number;
-}) {
+export default function ListPersonals({ data, onPress }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Image style={styles.image} source={props.image} />
+          <Image style={styles.image} source={data.image} />
         </View>
         <View>
           <Text>
-            {props.name}, {props.age} anos
+            {data.name}, {data.age} anos
           </Text>
           <Text>
-            Avaliação <Image source={props.star} />
+            Avaliação <Image source={data.star} />
           </Text>
         </View>
       </TouchableOpacity>

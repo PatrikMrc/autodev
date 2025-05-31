@@ -17,7 +17,6 @@ export default function Login() {
         source={require("../../../assets/images/AutoDev.png")}
         style={styles.logo}
       />
-      <Text style={styles.textLogin}>Faça Login Aqui!</Text>
       <View style={styles.divForm}>
         <View style={styles.containerForm}>
           <Text style={styles.text}>E-Mail</Text>

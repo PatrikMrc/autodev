@@ -1,8 +1,10 @@
 import Ads from "@/src/components/Ads";
 import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
 import { Feather } from "@expo/vector-icons";
-
+import { useNavigation } from "expo-router";
 export default function AdsCar() {
+  const navigation = useNavigation();
+
   const ListAdsCar = [
     {
       name: "Subaru",
@@ -69,9 +71,10 @@ export default function AdsCar() {
       {ListAdsCar.map((anuncio, index) => (
         <Ads
           key={index}
-          image={anuncio.image}
-          value={anuncio.value}
-          name={anuncio.name}
+          data={anuncio}
+          onPress={() =>
+            navigation.navigate("AdsDetailsCar", { data: anuncio })
+          }
         />
       ))}
     </ScrollView>

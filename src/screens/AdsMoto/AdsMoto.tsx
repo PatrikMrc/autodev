@@ -143,7 +143,9 @@ export default function AdsMoto() {
         <Ads
           key={index}
           data={anuncio}
-          onPress={() => navigation.navigate("AdsDetails", { data: anuncio })}
+          onPress={() =>
+            navigation.navigate("AdsDetailsMoto", { data: anuncio })
+          }
         />
       ))}
     </ScrollView>
