@@ -11,6 +11,7 @@ import AdsMoto from "@/src/screens/AdsMoto/AdsMoto";
 import AdsCar from "@/src/screens/AdsCar/AdsCar";
 import Despachant from "@/src/screens/Despachant/Despachant";
 import Mecanic from "@/src/screens/Mecanic/Mecanic";
+import AdsDetails from "@/src/screens/AdsDetails/AdsDetails";
 
 export default function StackRoutes() {
   return (
@@ -71,6 +72,14 @@ export default function StackRoutes() {
           title: "",
         }}
         component={Mecanic}
+      />
+      <Stack.Screen
+        name="AdsDetails"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={AdsDetails}
       />
     </Stack.Navigator>
   );

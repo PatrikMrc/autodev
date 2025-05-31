@@ -1,16 +1,15 @@
+import { useNavigation } from "expo-router";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
-export default function Ads(props: {
-  image: number;
-  name: string;
-  value: string;
-}) {
+export default function Ads({ data, onPress }) {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
-        <Image style={styles.image} source={props.image} />
-        <Text style={styles.textValue}>R${props.value}</Text>
-        <Text style={styles.textName}>{props.name}</Text>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
+        <Image style={styles.image} source={data.image} />
+        <Text style={styles.textValue}>R${data.value}</Text>
+        <Text style={styles.textName}>{data.name}</Text>
       </TouchableOpacity>
     </View>
   );
