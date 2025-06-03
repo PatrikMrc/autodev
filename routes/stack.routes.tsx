@@ -15,7 +15,7 @@ import AdsDetailsMoto from "@/src/screens/AdsDetails/AdsDetailsMoto";
 import AdsDetailsCar from "@/src/screens/AdsDetails/AdsDetailsCar";
 import MecanicDetails from "@/src/screens/Mecanic/MecanicDetails";
 import DespachantDetails from "@/src/screens/Despachant/DespachantDetails";
-
+import CreateAds from "@/src/screens/CreateAds/CreateAds";
 export default function StackRoutes() {
   return (
     <Stack.Navigator initialRouteName="Choice">
@@ -107,6 +107,14 @@ export default function StackRoutes() {
           title: "",
         }}
         component={MecanicDetails}
+      />
+      <Stack.Screen
+        name="CreateAds"
+        options={{
+          headerTitleStyle: { fontSize: 16 },
+          title: "",
+        }}
+        component={CreateAds}
       />
     </Stack.Navigator>
   );
