@@ -37,10 +37,10 @@ export default function AdsCar() {
       model: "Mustang HellCat",
       location: "Recife-PE",
       year: 2023,
-      km: "5.000",
+      km: "9.000",
       engine: "V8",
       document: "IPVA 2025 Pago",
-      state: "Conservado",
+      state: "Usado",
     },
     {
       name: "Porsche GT3",
@@ -49,10 +49,10 @@ export default function AdsCar() {
       model: "Porsche GT3",
       location: "Caruaru-PE",
       year: 2021,
-      km: "5.000",
+      km: "2.000",
       engine: "V10 Bi-Turbo",
       document: "IPVA 2025 Pago",
-      state: "Conservado",
+      state: "Usado",
     },
     {
       name: "Seinao kkk",
@@ -64,7 +64,7 @@ export default function AdsCar() {
       km: "5.000",
       engine: "V8",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      state: "Usado",
     },
     {
       name: "Alpine",
@@ -76,7 +76,7 @@ export default function AdsCar() {
       km: "5.000",
       engine: "2.0",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      state: "Usado",
     },
     {
       name: "Audi A4",
@@ -88,7 +88,7 @@ export default function AdsCar() {
       km: "20.000",
       engine: "V6",
       document: "IPVA 2025 Pago",
-      state: "Conservado",
+      state: "Usado",
     },
     {
       name: "BMW 320i",
