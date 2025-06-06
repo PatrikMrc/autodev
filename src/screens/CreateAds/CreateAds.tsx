@@ -17,6 +17,10 @@ export default function CreateAds() {
   const Vehicle = ["Carro", "Moto"];
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const [descricao, setDescricao] = useState("");
+  const [preco, setPreco] = useState("");
+  const [endereco, setEndereco] = useState("");
+  const [nomeVeiculo, setNomeVeiculo] = useState("");
 
   const brands = [
     "Honda",
@@ -49,6 +53,8 @@ export default function CreateAds() {
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Nome Do Veículo</Text>
         <TextInput
+          value={nomeVeiculo}
+          onChangeText={setNomeVeiculo}
           style={styles.inputs}
           placeholderTextColor="grey"
           placeholder="Ex: Caravan"
@@ -134,17 +140,31 @@ export default function CreateAds() {
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Cidade/Estado</Text>
         <TextInput
+          value={endereco}
+          onChangeText={setEndereco}
           placeholder="Ex: Caruaru/PE"
           style={styles.inputs}
         ></TextInput>
       </View>
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Descrição</Text>
-        <TextInput style={styles.inputs}></TextInput>
+        <TextInput
+          value={descricao}
+          onChangeText={setDescricao}
+          multiline
+          numberOfLines={10}
+          style={styles.inputs}
+        ></TextInput>
       </View>
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Preço</Text>
-        <TextInput placeholder="R$" style={styles.inputs}></TextInput>
+        <TextInput
+          value={preco}
+          onChangeText={setPreco}
+          keyboardType="numeric"
+          placeholder="R$"
+          style={styles.inputs}
+        ></TextInput>
       </View>
       <View style={{ width: "100%" }}>
         <TouchableOpacity style={styles.button}>

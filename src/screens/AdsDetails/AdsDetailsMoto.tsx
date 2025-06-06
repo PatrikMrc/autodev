@@ -6,11 +6,36 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Modal,
+  Alert,
+  Platform,
 } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "expo-router";
+import { useState } from "react";
+
 export default function Detalhes({ route }) {
   const { data } = route.params;
   const navigation = useNavigation();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [showPicker, setShowPicker] = useState(false);
+
+  const handleConfirm = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShowPicker(Platform.OS === "ios");
+    setDate(currentDate);
+  };
+
+  const handleSchedule = () => {
+    setModalVisible(false);
+    Alert.alert(
+      "Test Drive Agendado",
+      `Veículo: ${data.name}\nData e Hora: ${date.toLocaleString()}`
+    );
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={data.image} style={styles.image} />
@@ -37,22 +62,74 @@ export default function Detalhes({ route }) {
           Documento: <Text style={styles.info}>{data.document}</Text>
         </Text>
         <Text style={styles.label}>
-          Estado: <Text style={styles.info}>{data.state}</Text>
+          Estado: <Text style={styles.info}>{data.condition}</Text>
         </Text>
       </View>
+
       <View style={styles.containerProposal}>
         <TextInput
           style={styles.input}
+          keyboardType="numeric"
           placeholderTextColor={"grey"}
           placeholder="Valor da Proposta"
-        ></TextInput>
+        />
         <TouchableOpacity style={styles.button1}>
           <Text style={styles.buttonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button2}>
+
+      <TouchableOpacity
+        style={styles.button2}
+        onPress={() => setModalVisible(true)}
+      >
         <Text style={styles.buttonText}>Agendar Test Drive</Text>
       </TouchableOpacity>
+
+      {/* Modal de Agendamento */}
+      <Modal
+        visible={modalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Selecione Data e Hora</Text>
+
+            <TouchableOpacity
+              style={styles.dateButton}
+              onPress={() => setShowPicker(true)}
+            >
+              <Text style={styles.dateButtonText}>{date.toLocaleString()}</Text>
+            </TouchableOpacity>
+
+            {showPicker && (
+              <DateTimePicker
+                value={date}
+                mode="datetime"
+                display="default"
+                onChange={handleConfirm}
+              />
+            )}
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: "#ccc" }]}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={{ color: "#000" }}>Cancelar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.modalButton, { backgroundColor: "#1F41BB" }]}
+                onPress={handleSchedule}
+              >
+                <Text style={{ color: "#fff" }}>Agendar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
@@ -116,12 +193,53 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 18,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   input: {
     borderColor: "grey",
     borderWidth: 1,
     borderRadius: 15,
     padding: 15,
+    width: "65%",
+  },
+
+  // Modal
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 25,
+    borderRadius: 15,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 15,
+    fontWeight: "bold",
+  },
+  dateButton: {
+    backgroundColor: "#eee",
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  dateButtonText: {
+    fontSize: 16,
+    color: "#333",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    gap: 15,
+  },
+  modalButton: {
+    padding: 10,
+    borderRadius: 10,
+    width: 100,
+    alignItems: "center",
   },
 });

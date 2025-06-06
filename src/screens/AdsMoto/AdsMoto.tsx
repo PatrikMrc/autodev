@@ -17,7 +17,7 @@ export default function AdsMoto() {
       km: "70.000",
       engine: "250",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Triumph Street Triple",
@@ -29,7 +29,7 @@ export default function AdsMoto() {
       km: "20.000",
       engine: "765",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Cg Fan 150",
@@ -41,7 +41,7 @@ export default function AdsMoto() {
       km: "100.000",
       engine: "150",
       document: "IPVA 2024 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Hornet",
@@ -53,7 +53,7 @@ export default function AdsMoto() {
       km: "60.000",
       engine: "600",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Hornet Carburada",
@@ -65,7 +65,7 @@ export default function AdsMoto() {
       km: "120.000",
       engine: "600",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Harley Davidson 1200x",
@@ -77,7 +77,7 @@ export default function AdsMoto() {
       km: "30.000",
       engine: "1200",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Royal",
@@ -89,7 +89,7 @@ export default function AdsMoto() {
       km: "100.000",
       engine: "250",
       document: "IPVA 2024 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Bmw",
@@ -101,7 +101,7 @@ export default function AdsMoto() {
       km: "1.000",
       engine: "650",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "SuperCub",
@@ -113,7 +113,7 @@ export default function AdsMoto() {
       km: "3.000",
       engine: "100",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Royal Enfield",
@@ -125,7 +125,7 @@ export default function AdsMoto() {
       km: "15.000",
       engine: "650",
       document: "IPVA 2024 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
   ];
 

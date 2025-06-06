@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import MyAdsComponent from "@/src/components/MyAds";
+import MyAdsComponent from "@/src/components/MyAdsComponent";
 import { useNavigation } from "expo-router";
 
 export default function MyAds() {

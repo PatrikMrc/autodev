@@ -16,7 +16,7 @@ export default function AdsCar() {
       km: "0",
       engine: "V6",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      condition: "Novo",
     },
     {
       name: "Porsche 911",
@@ -28,7 +28,7 @@ export default function AdsCar() {
       km: "0",
       engine: "V8",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      condition: "Novo",
     },
     {
       name: "Mustang",
@@ -40,7 +40,7 @@ export default function AdsCar() {
       km: "9.000",
       engine: "V8",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Porsche GT3",
@@ -52,7 +52,7 @@ export default function AdsCar() {
       km: "2.000",
       engine: "V10 Bi-Turbo",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Seinao kkk",
@@ -64,7 +64,7 @@ export default function AdsCar() {
       km: "5.000",
       engine: "V8",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Alpine",
@@ -76,7 +76,7 @@ export default function AdsCar() {
       km: "5.000",
       engine: "2.0",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "Audi A4",
@@ -88,7 +88,7 @@ export default function AdsCar() {
       km: "20.000",
       engine: "V6",
       document: "IPVA 2025 Pago",
-      state: "Usado",
+      condition: "Usado",
     },
     {
       name: "BMW 320i",
@@ -100,7 +100,7 @@ export default function AdsCar() {
       km: "0.000",
       engine: "4.0",
       document: "IPVA 2024 Pago",
-      state: "Novo",
+      condition: "Novo",
     },
     {
       name: "Skyline R35",
@@ -112,7 +112,7 @@ export default function AdsCar() {
       km: "0.000",
       engine: "V10",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      condition: "Novo",
     },
     {
       name: "Audi R8",
@@ -124,7 +124,7 @@ export default function AdsCar() {
       km: "0.000",
       engine: "V10",
       document: "IPVA 2025 Pago",
-      state: "Novo",
+      condition: "Novo",
     },
   ];
 
