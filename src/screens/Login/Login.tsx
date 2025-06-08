@@ -5,11 +5,41 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Login() {
   const navigation = useNavigation();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Erro", "Preencha todos os campos.");
+      return;
+    }
+
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        const token = response.data.token;
+        await AsyncStorage.setItem("token", token);
+        Alert.alert("Sucesso", "Login realizado!");
+        navigation.navigate("Home");
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro", "E-mail ou senha inválidos.");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -20,18 +50,26 @@ export default function Login() {
       <View style={styles.divForm}>
         <View style={styles.containerForm}>
           <Text style={styles.text}>E-Mail</Text>
-          <TextInput style={styles.textInput}></TextInput>
+          <TextInput
+            autoCapitalize="none"
+            keyboardType="email-address"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.textInput}
+          ></TextInput>
         </View>
         <View style={styles.containerForm}>
           <Text style={styles.text}>Senha</Text>
-          <TextInput style={styles.textInput}></TextInput>
+          <TextInput
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+            style={styles.textInput}
+          ></TextInput>
         </View>
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
-          style={styles.button1}
-        >
+        <TouchableOpacity onPress={handleLogin} style={styles.button1}>
           <Text style={styles.textButton}>Entrar</Text>
         </TouchableOpacity>
       </View>

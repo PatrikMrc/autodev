@@ -5,12 +5,49 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-
+import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 export default function Cadastro() {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPassword_confirmation] = useState("");
+
+  const handleCadastro = async () => {
+    if (!name || !email || !phone || !password || !password_confirmation) {
+      Alert.alert("Erro", "Preencha todos os campos.");
+      return;
+    }
+
+    if (password !== password_confirmation) {
+      Alert.alert("Erro", "As senhas não coincidem.");
+      return;
+    }
+
+    try {
+      //endereco e method
+      await axios.post("http://127.0.0.1:8000/api/store", {
+        name,
+        email,
+        phone,
+        password,
+        password_confirmation,
+      });
+      //sucesso
+      Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
+      navigation.navigate("Login");
+      //erro
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Erro", "Não foi possível concluir o cadastro.");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -23,19 +60,38 @@ export default function Cadastro() {
         <Text style={styles.text}>Insira seus dados para se cadastrar.</Text>
       </View>
       <View style={styles.containerForm}>
-        <TextInput placeholder="Nome" style={styles.textInput}></TextInput>
-        <TextInput placeholder="E-mail" style={styles.textInput}></TextInput>
-        <TextInput placeholder="Telefone" style={styles.textInput}></TextInput>
-        <TextInput placeholder="Senha" style={styles.textInput}></TextInput>
+        <TextInput
+          value={name}
+          onChangeText={setName}
+          placeholder="Nome"
+          style={styles.textInput}
+        ></TextInput>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="E-mail"
+          style={styles.textInput}
+        ></TextInput>
+        <TextInput
+          value={phone}
+          onChangeText={setPhone}
+          placeholder="Telefone"
+          style={styles.textInput}
+        ></TextInput>
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Senha"
+          style={styles.textInput}
+        ></TextInput>
         <TextInput
           placeholder="Confirmar Senha"
+          value={password_confirmation}
+          onChangeText={setPassword_confirmation}
           style={styles.textInput}
         ></TextInput>
       </View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
-        style={styles.button}
-      >
+      <TouchableOpacity onPress={handleCadastro} style={styles.button}>
         <Text style={styles.textButton}>Proximo</Text>
       </TouchableOpacity>
     </View>

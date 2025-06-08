@@ -13,7 +13,6 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "expo-router";
 import { useState } from "react";
-import axios from "axios";
 
 export default function Detalhes({ route }) {
   const navigation = useNavigation();
