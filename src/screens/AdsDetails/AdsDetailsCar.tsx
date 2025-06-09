@@ -13,8 +13,10 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "expo-router";
 import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
-export default function Detalhes({ route }) {
+export default function AdsDetailsCar({ route }) {
   const navigation = useNavigation();
   const { data } = route.params;
   const [proposta, setProposta] = useState("");
@@ -28,23 +30,86 @@ export default function Detalhes({ route }) {
     setDate(currentDate);
   };
 
-  const handleSchedule = () => {
-    setModalVisible(false);
-    Alert.alert(
-      "Test Drive Agendado",
-      `Veículo: ${data.name}\nData e Hora: ${date.toLocaleString()}`
-    );
+  const handleSchedule = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        Alert.alert("Erro", "Usuário não autenticado.");
+        return;
+      }
+
+      const body = {
+        product_id: data.id, // ou product_id, conforme sua API
+        date: date.toISOString(),
+      };
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/schedulling/store",
+        body,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      Alert.alert("Sucesso", "Test drive agendado com sucesso!");
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Erro ao agendar test drive:", error);
+      Alert.alert("Erro", "Não foi possível agendar o test drive.");
+    }
   };
 
+  const handleProposta = async () => {
+    console.log("ID do produto:", data.id);
+    if (!proposta || isNaN(Number(proposta))) {
+      Alert.alert("Erro", "Digite um valor válido para a proposta.");
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        Alert.alert("Erro", "Usuário não autenticado.");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/order/store", // endereco
+        {
+          //tratamento dos dados a serem enviados
+          amount: Number(proposta),
+          product_id: data.id,
+        },
+        {
+          //envio do token para api
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      Alert.alert("Sucesso", "Proposta enviada com sucesso!");
+      setProposta("");
+    } catch (error) {
+      console.error("Erro ao enviar proposta:", error);
+      Alert.alert("Erro", "Não foi possível enviar a proposta.");
+    }
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={data.image} style={styles.image} />
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.value}>R$ {data.value}</Text>
+      <Text style={styles.value}>R$ {data.amount}</Text>
 
       <View style={styles.details}>
         <Text style={styles.label}>
-          Modelo: <Text style={styles.info}>{data.model}</Text>
+          Marca: <Text style={styles.info}>{data.mark}</Text>
         </Text>
         <Text style={styles.label}>
           Localização: <Text style={styles.info}>{data.location}</Text>
@@ -59,10 +124,7 @@ export default function Detalhes({ route }) {
           Motor: <Text style={styles.info}>{data.engine}</Text>
         </Text>
         <Text style={styles.label}>
-          Documento: <Text style={styles.info}>{data.document}</Text>
-        </Text>
-        <Text style={styles.label}>
-          Estado: <Text style={styles.info}>{data.condition}</Text>
+          Estado: <Text style={styles.info}>{data.type}</Text>
         </Text>
       </View>
 
@@ -75,7 +137,7 @@ export default function Detalhes({ route }) {
           value={proposta}
           onChangeText={setProposta}
         />
-        <TouchableOpacity onPress={enviarProposta} style={styles.button1}>
+        <TouchableOpacity onPress={handleProposta} style={styles.button1}>
           <Text style={styles.buttonText}>Enviar</Text>
         </TouchableOpacity>
       </View>

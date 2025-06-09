@@ -8,7 +8,7 @@ export default function Ads({ data, onPress }) {
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} style={styles.button}>
         <Image style={styles.image} source={data.image} />
-        <Text style={styles.textValue}>R${data.value}</Text>
+        <Text style={styles.textValue}>R${data.amount}</Text>
         <Text style={styles.textName}>{data.name}</Text>
       </TouchableOpacity>
     </View>

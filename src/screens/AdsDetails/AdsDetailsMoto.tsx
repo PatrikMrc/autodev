@@ -40,7 +40,7 @@ export default function Detalhes({ route }) {
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={data.image} style={styles.image} />
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.value}>R$ {data.value}</Text>
+      <Text style={styles.value}>R$ {data.amount}</Text>
 
       <View style={styles.details}>
         <Text style={styles.label}>

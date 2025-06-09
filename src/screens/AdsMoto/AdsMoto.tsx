@@ -1,16 +1,25 @@
 import Ads from "@/src/components/Ads";
-import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
-
+import axios from "axios";
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function AdsMoto() {
   const navigation = useNavigation();
-
+  const [allAds, setAllAds] = useState([]);
   const ListAdsMoto = [
     {
       name: "CbTwister 250",
       image: require("../../../assets/images/moto1.png"),
-      value: "15,000",
+      amount: "15,000",
       model: "Honda CB TWISTER",
       location: "Caruaru-PE",
       year: 2018,
@@ -22,7 +31,7 @@ export default function AdsMoto() {
     {
       name: "Triumph Street Triple",
       image: require("../../../assets/images/moto2.png"),
-      value: "56.100",
+      amount: "56.100",
       model: "Triumph Street Triple",
       location: "São Paulo",
       year: 2023,
@@ -34,7 +43,7 @@ export default function AdsMoto() {
     {
       name: "Cg Fan 150",
       image: require("../../../assets/images/moto3.png"),
-      value: "10.000",
+      amount: "10.000",
       model: "Honda CG Fan 150",
       location: "Toritama-PE",
       year: 2013,
@@ -46,7 +55,7 @@ export default function AdsMoto() {
     {
       name: "Hornet",
       image: require("../../../assets/images/moto4.png"),
-      value: "32.500",
+      amount: "32.500",
       model: "Honda Hornet",
       location: "Campina-Grande",
       year: 2011,
@@ -58,7 +67,7 @@ export default function AdsMoto() {
     {
       name: "Hornet Carburada",
       image: require("../../../assets/images/moto5.png"),
-      value: "27.000",
+      amount: "27.000",
       model: "Honda Hornet",
       location: "João Pessoa-PB",
       year: 2007,
@@ -70,7 +79,7 @@ export default function AdsMoto() {
     {
       name: "Harley Davidson 1200x",
       image: require("../../../assets/images/moto6.png"),
-      value: "70.400",
+      amount: "70.400",
       model: "Harley Davidson 1200x",
       location: "Caruaru-PE",
       year: 2020,
@@ -82,7 +91,7 @@ export default function AdsMoto() {
     {
       name: "Royal",
       image: require("../../../assets/images/moto7.png"),
-      value: "35.000",
+      amount: "35.000",
       model: "Royal Enfield",
       location: "Caruaru-PE",
       year: 2019,
@@ -94,7 +103,7 @@ export default function AdsMoto() {
     {
       name: "Bmw",
       image: require("../../../assets/images/moto8.png"),
-      value: "60.350",
+      amount: "60.350",
       model: "BMW",
       location: "Pesqueira-PE",
       year: 2016,
@@ -106,7 +115,7 @@ export default function AdsMoto() {
     {
       name: "SuperCub",
       image: require("../../../assets/images/moto9.png"),
-      value: "17.200",
+      amount: "17.200",
       model: "honda SuperCub",
       location: "Catende-PE",
       year: 1996,
@@ -118,7 +127,7 @@ export default function AdsMoto() {
     {
       name: "Royal Enfield",
       image: require("../../../assets/images/moto10.png"),
-      value: "26.400",
+      amount: "26.400",
       model: "Royal Enfield GT",
       location: "Batateira-PE",
       year: 2024,
@@ -128,6 +137,44 @@ export default function AdsMoto() {
       condition: "Usado",
     },
   ];
+
+  useEffect(() => {
+    const fetchUserAds = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+
+        if (!token) {
+          Alert.alert("Erro", "Usuário não autenticado");
+          return;
+        }
+
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/product/get?category_id=2",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const anunciosBackend = response.data.products.map((item) => ({
+          name: item.name,
+          amount: item.amount,
+          mark: item.mark,
+          location: item.location,
+          type: item.type,
+        }));
+
+        setAllAds([...ListAdsMoto, ...anunciosBackend]);
+      } catch (error) {
+        console.error("Erro ao buscar anúncios do backend:", error);
+        Alert.alert("Erro", "Não foi possível carregar seus anúncios.");
+        setAllAds(ListAdsMoto);
+      }
+    };
+
+    fetchUserAds();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -139,7 +186,7 @@ export default function AdsMoto() {
         ></TextInput>
         <Feather name="search" size={20} color="#888" style={styles.icon} />
       </View>
-      {ListAdsMoto.map((anuncio, index) => (
+      {allAds.map((anuncio, index) => (
         <Ads
           key={index}
           data={anuncio}

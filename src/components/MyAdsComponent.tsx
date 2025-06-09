@@ -1,6 +1,13 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Alert,
+} from "react-native";
 
-export default function MyAds({ myads }) {
+export default function MyAds({ myads, onDelete }) {
   return (
     <View style={styles.container}>
       <View style={styles.containerImgInfos}>
@@ -8,22 +15,20 @@ export default function MyAds({ myads }) {
         <View style={styles.containerInfos}>
           <Text style={{ fontSize: 16, fontWeight: 500 }}>{myads.name}</Text>
           <Text style={{ fontSize: 14, fontWeight: 500, color: "#FF7816" }}>
-            R$ {myads.value}
+            R$ {myads.amount}
           </Text>
           <Text style={{ fontSize: 10, fontWeight: 500, color: "grey" }}>
-            Condição: {myads.condition}
+            Condição: {myads.type}
           </Text>
         </View>
       </View>
       <View style={styles.containerButtons}>
-        <TouchableOpacity style={styles.button1}>
+        <TouchableOpacity
+          onPress={() => onDelete(myads.id)}
+          style={styles.button1}
+        >
           <Text style={{ color: "white", fontSize: 12, fontWeight: 400 }}>
             Excluir Anúncio
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button2}>
-          <Text style={{ color: "white", fontSize: 12, fontWeight: 400 }}>
-            Editar Anúncio
           </Text>
         </TouchableOpacity>
       </View>

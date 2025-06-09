@@ -6,22 +6,26 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Alert,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function CreateAds() {
+  //states para armazenar oque foi selecionado e digitado, inicializando e null ou string vazia
   const [selectedOption, setSelectedOption] = useState(null);
   const [VehicleOption, setVehicleOption] = useState(null);
-  const options = ["Novo", "Usado"];
-  const Vehicle = ["Carro", "Moto"];
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState(null);
-  const [descricao, setDescricao] = useState("");
-  const [preco, setPreco] = useState("");
-  const [endereco, setEndereco] = useState("");
-  const [nomeVeiculo, setNomeVeiculo] = useState("");
-
+  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [location, setLocation] = useState("");
+  const [name, setName] = useState("");
+  const options = ["Novo", "Usado"];
+  const Vehicle = ["Carros", "Motos"];
+  //lista de marcas de veiculos para dropdown
   const brands = [
     "Honda",
     "Yamaha",
@@ -40,21 +44,87 @@ export default function CreateAds() {
     "Nissan",
     "Renault",
   ];
-
+  //funcao de dropdown de marcas de veiculos
   const toggleDropdown = () => setIsOpen(!isOpen);
-
   const selectBrand = (brand) => {
     setSelectedBrand(brand);
     setIsOpen(false);
   };
+  //funcao de limpar imputs ao enviar anuncio
+  const limparCampos = () => {
+    setName("");
+    setSelectedBrand(null);
+    setLocation("");
+    setDescription("");
+    setAmount("");
+    setSelectedOption(null);
+    setVehicleOption(null);
+  };
+  //validacao de dados
+  const enviarAnuncio = async () => {
+    if (
+      !name ||
+      !selectedBrand ||
+      !location ||
+      !description ||
+      !amount ||
+      !selectedOption ||
+      !VehicleOption
+    ) {
+      Alert.alert("Erro", "Preencha todos os campos");
+      return;
+    }
+    //tratamento de categoria do envio para back-end
+    const categoryId = VehicleOption === "Motos" ? 2 : 1;
+    try {
+      //validacao de token
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        Alert.alert("Erro", "Usuário não autenticado");
+        return;
+      }
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/product/store", // endereco
+        {
+          //tratamento dos dados a serem enviados
+          name,
+          mark: selectedBrand,
+          category: categoryId,
+          location,
+          description,
+          type: selectedOption,
+          amount,
+        },
+        {
+          //envio do token para api
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      // tratamento de respostas da api
+      if (response.status === 200 || response.status === 201) {
+        Alert.alert("Sucesso", "Anúncio criado com sucesso!");
+        limparCampos();
+      } else {
+        Alert.alert("Erro", "Erro ao criar anúncio");
+      }
+    } catch (error) {
+      console.error("Erro:", error.response?.data || error.message);
+      Alert.alert("Erro", "Erro ao enviar o anúncio");
+    }
+  };
 
   return (
+    //corpo do app
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Nome Do Veículo</Text>
         <TextInput
-          value={nomeVeiculo}
-          onChangeText={setNomeVeiculo}
+          value={name}
+          onChangeText={setName}
           style={styles.inputs}
           placeholderTextColor="grey"
           placeholder="Ex: Caravan"
@@ -140,8 +210,9 @@ export default function CreateAds() {
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Cidade/Estado</Text>
         <TextInput
-          value={endereco}
-          onChangeText={setEndereco}
+          placeholderTextColor={"grey"}
+          value={location}
+          onChangeText={setLocation}
           placeholder="Ex: Caruaru/PE"
           style={styles.inputs}
         ></TextInput>
@@ -149,8 +220,8 @@ export default function CreateAds() {
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Descrição</Text>
         <TextInput
-          value={descricao}
-          onChangeText={setDescricao}
+          value={description}
+          onChangeText={setDescription}
           multiline
           numberOfLines={10}
           style={styles.inputs}
@@ -159,15 +230,16 @@ export default function CreateAds() {
       <View style={{ marginTop: 20 }}>
         <Text style={styles.text}>Preço</Text>
         <TextInput
-          value={preco}
-          onChangeText={setPreco}
+          placeholderTextColor={"grey"}
+          value={amount}
+          onChangeText={setAmount}
           keyboardType="numeric"
           placeholder="R$"
           style={styles.inputs}
         ></TextInput>
       </View>
       <View style={{ width: "100%" }}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={enviarAnuncio} style={styles.button}>
           <Text style={{ color: "white", fontSize: 20, fontWeight: 500 }}>
             Publicar
           </Text>
@@ -211,7 +283,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "black",
     borderRadius: 8,
     padding: 12,
     backgroundColor: "#f2f2f2",

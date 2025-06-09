@@ -1,15 +1,26 @@
 import Ads from "@/src/components/Ads";
-import { View, Text, StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 export default function AdsCar() {
   const navigation = useNavigation();
-
+  const [allAds, setAllAds] = useState([]);
   const ListAdsCar = [
     {
+      id: 1,
       name: "Subaru",
       image: require("../../../assets/images/car1.png"),
-      value: "600,100",
+      amount: "600,100",
       model: "Subaru",
       location: "Recife-PE",
       year: 2023,
@@ -19,9 +30,10 @@ export default function AdsCar() {
       condition: "Novo",
     },
     {
+      id: 2,
       name: "Porsche 911",
       image: require("../../../assets/images/car2.png"),
-      value: "800,700",
+      amount: "800,700",
       model: "Porsche 911",
       location: "Pesqueira-PE",
       year: 2024,
@@ -31,9 +43,10 @@ export default function AdsCar() {
       condition: "Novo",
     },
     {
+      id: 3,
       name: "Mustang",
       image: require("../../../assets/images/car3.png"),
-      value: "450,000",
+      amount: "450,000",
       model: "Mustang HellCat",
       location: "Recife-PE",
       year: 2023,
@@ -43,9 +56,10 @@ export default function AdsCar() {
       condition: "Usado",
     },
     {
+      id: 4,
       name: "Porsche GT3",
       image: require("../../../assets/images/car4.png"),
-      value: "1,200,000",
+      amount: "1,200,000",
       model: "Porsche GT3",
       location: "Caruaru-PE",
       year: 2021,
@@ -55,9 +69,10 @@ export default function AdsCar() {
       condition: "Usado",
     },
     {
+      id: 5,
       name: "Seinao kkk",
       image: require("../../../assets/images/car5.png"),
-      value: "7.000",
+      amount: "7.000",
       model: "naosei",
       location: "Recife-PE",
       year: 2023,
@@ -67,9 +82,10 @@ export default function AdsCar() {
       condition: "Usado",
     },
     {
+      id: 6,
       name: "Alpine",
       image: require("../../../assets/images/car6.png"),
-      value: "200,000",
+      amount: "200,000",
       model: "Alpine",
       location: "Toritama-PE",
       year: 2018,
@@ -79,9 +95,10 @@ export default function AdsCar() {
       condition: "Usado",
     },
     {
+      id: 7,
       name: "Audi A4",
       image: require("../../../assets/images/car7.png"),
-      value: "250,500",
+      amount: "250,500",
       model: "Audi A4",
       location: "Batateira-PE",
       year: 2017,
@@ -91,9 +108,10 @@ export default function AdsCar() {
       condition: "Usado",
     },
     {
+      id: 8,
       name: "BMW 320i",
       image: require("../../../assets/images/car8.png"),
-      value: "150,300",
+      amount: "150,300",
       model: "Bmw 320I",
       location: "Águas Pretas-PE",
       year: 2020,
@@ -103,9 +121,10 @@ export default function AdsCar() {
       condition: "Novo",
     },
     {
+      id: 9,
       name: "Skyline R35",
       image: require("../../../assets/images/car9.png"),
-      value: "1,400,000",
+      amount: "1,400,000",
       model: "Skyline GTR R35",
       location: "Caruaru-PE",
       year: 2015,
@@ -115,9 +134,10 @@ export default function AdsCar() {
       condition: "Novo",
     },
     {
+      id: 10,
       name: "Audi R8",
       image: require("../../../assets/images/car10.png"),
-      value: "1,600,000",
+      amount: "1,600,000",
       model: "Audi R8",
       location: "Recife-PE",
       year: 2025,
@@ -127,6 +147,47 @@ export default function AdsCar() {
       condition: "Novo",
     },
   ];
+
+  useEffect(() => {
+    const fetchUserAds = async () => {
+      try {
+        const token = await AsyncStorage.getItem("token");
+
+        if (!token) {
+          Alert.alert("Erro", "Usuário não autenticado");
+          return;
+        }
+
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/product/get?category_id=1",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const anunciosBackend = response.data.products.map((item) => ({
+          id: item.id,
+          name: item.name,
+          amount: item.amount,
+          mark: item.mark,
+          location: item.location,
+          year: item.year,
+          km: item.km,
+          engine: item.engine,
+          type: item.type,
+        }));
+
+        setAllAds([...ListAdsCar, ...anunciosBackend]);
+      } catch (error) {
+        console.error("Erro ao buscar anúncios do backend:", error);
+        Alert.alert("Erro", "Não foi possível carregar seus anúncios.");
+        setAllAds(ListAdsCar);
+      }
+    };
+
+    fetchUserAds();
+  }, []);
 
   return (
     <ScrollView style={styles.container}>
@@ -138,7 +199,7 @@ export default function AdsCar() {
         ></TextInput>
         <Feather name="search" size={20} color="#888" style={styles.icon} />
       </View>
-      {ListAdsCar.map((anuncio, index) => (
+      {allAds.map((anuncio, index) => (
         <Ads
           key={index}
           data={anuncio}

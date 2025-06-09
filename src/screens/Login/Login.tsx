@@ -61,6 +61,8 @@ export default function Login() {
         <View style={styles.containerForm}>
           <Text style={styles.text}>Senha</Text>
           <TextInput
+            placeholderTextColor={"grey"}
+            placeholder="6 Caracteres"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
