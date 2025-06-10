@@ -13,8 +13,11 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function AdsMoto() {
+  //ROUTE
   const navigation = useNavigation();
+  //STATE
   const [allAds, setAllAds] = useState([]);
+  //BANCO LOCAL
   const ListAdsMoto = [
     {
       id: 80,
@@ -137,7 +140,7 @@ export default function AdsMoto() {
       type: "Usado",
     },
   ];
-
+  //CARREGAMENTO
   useEffect(() => {
     const fetchUserAds = async () => {
       try {
@@ -147,7 +150,7 @@ export default function AdsMoto() {
           Alert.alert("Erro", "Usuário não autenticado");
           return;
         }
-
+        //API REQUEST
         const response = await axios.get(
           "http://192.168.0.18:8000/api/product/get?category_id=2",
           {
@@ -156,7 +159,7 @@ export default function AdsMoto() {
             },
           }
         );
-
+        //FORMATACAO
         const anunciosBackend = response.data.products.map((item) => ({
           id: item.id,
           name: item.name,
@@ -177,7 +180,7 @@ export default function AdsMoto() {
 
     fetchUserAds();
   }, []);
-
+  //ESTRUTURA
   return (
     <ScrollView style={styles.container}>
       <View style={styles.containerInput}>

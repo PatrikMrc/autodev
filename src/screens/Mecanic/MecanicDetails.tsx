@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 
 export default function MecanicDetails({ route }) {
+  //PASSO PROPS VIA ROTA RECEBENDO POR DATA
   const { data } = route.params;
   return (
     <View style={styles.container}>

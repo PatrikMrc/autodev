@@ -7,14 +7,17 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
+//LIB ICON
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 export default function AdsCar() {
+  //ROTAS
   const navigation = useNavigation();
   const [allAds, setAllAds] = useState([]);
+  //BANCO LOCAL
   const ListAdsCar = [
     {
       id: 11,
@@ -137,7 +140,7 @@ export default function AdsCar() {
       type: "Novo",
     },
   ];
-
+  //CARREGAMENTO
   useEffect(() => {
     const fetchUserAds = async () => {
       try {
@@ -147,7 +150,7 @@ export default function AdsCar() {
           Alert.alert("Erro", "Usuário não autenticado");
           return;
         }
-
+        //API REQUEST
         const response = await axios.get(
           "http://192.168.0.18:8000/api/product/get?category_id=1",
           {
@@ -156,6 +159,7 @@ export default function AdsCar() {
             },
           }
         );
+        //FORMATACAO DE DADOS RECEBIDOS DO GET
         const anunciosBackend = response.data.products.map((item) => ({
           id: item.id,
           name: item.name,
@@ -167,7 +171,7 @@ export default function AdsCar() {
           engine: item.engine,
           type: item.type,
         }));
-
+        //PASSANDO OS DADOS DE 2 ARRAYS PARA UM STATE
         setAllAds([...ListAdsCar, ...anunciosBackend]);
       } catch (error) {
         setAllAds(ListAdsCar);
@@ -176,7 +180,7 @@ export default function AdsCar() {
 
     fetchUserAds();
   }, []);
-
+  //ESTRUTURA
   return (
     <ScrollView style={styles.container}>
       <View style={styles.containerInput}>

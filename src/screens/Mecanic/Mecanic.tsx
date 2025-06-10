@@ -3,7 +3,7 @@ import ListPersonals from "../../components/ListProfissionals";
 import { useNavigation } from "expo-router";
 export default function Mecanic() {
   const navigation = useNavigation();
-
+  //BANCO LOCAL
   const personalMecanic = [
     {
       name: "Amaral Fonseca",
