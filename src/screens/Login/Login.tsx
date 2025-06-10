@@ -24,7 +24,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+      const response = await axios.post("http://192.168.0.18:8000/api/login", {
         email,
         password,
       });
@@ -32,7 +32,6 @@ export default function Login() {
       if (response.status === 200) {
         const token = response.data.token;
         await AsyncStorage.setItem("token", token);
-        Alert.alert("Sucesso", "Login realizado!");
         navigation.navigate("Home");
       }
     } catch (error) {

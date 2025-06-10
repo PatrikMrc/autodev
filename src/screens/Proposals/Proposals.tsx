@@ -19,7 +19,7 @@ export default function Proposals() {
           }
 
           const response = await axios.get(
-            "http://127.0.0.1:8000/api/order/getMyOrders",
+            "http://192.168.0.18:8000/api/order/getMyOrders",
             {
               headers: {
                 Authorization: `Bearer ${token}`,

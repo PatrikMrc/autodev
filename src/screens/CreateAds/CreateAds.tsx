@@ -91,7 +91,7 @@ export default function CreateAds() {
         return;
       }
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/product/store", // endereco
+        "http://192.168.0.18:8000/api/product/store", // endereco
         {
           //tratamento dos dados a serem enviados
           name,

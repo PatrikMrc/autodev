@@ -42,7 +42,7 @@ export default function Detalhes({ route }) {
       const formattedDate = date.toISOString().split("T")[0];
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/schedulling/store",
+        "http://192.168.0.18:8000/api/schedulling/store",
         {
           //tratamento dos dados a serem enviados
           product_id: data.id,
@@ -79,7 +79,7 @@ export default function Detalhes({ route }) {
       }
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/order/store", // endereco
+        "http://192.168.0.18:8000/api/order/store", // endereco
         {
           //tratamento dos dados a serem enviados
           amount: Number(amount),

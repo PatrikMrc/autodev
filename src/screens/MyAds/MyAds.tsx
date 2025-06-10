@@ -25,7 +25,7 @@ export default function MyAds() {
         return;
       }
       const response = await axios.get(
-        "http://127.0.0.1:8000/api/product/getMyProducts",
+        "http://192.168.0.18:8000/api/product/getMyProducts",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -48,12 +48,7 @@ export default function MyAds() {
       } else {
         Alert.alert("Erro", "Erro ao carregar anúncios");
       }
-    } catch (error) {
-      console.error(
-        "Erro ao buscar anúncios:",
-        error.response?.data || error.message
-      );
-    }
+    } catch (error) {}
   };
   //recarrega pagina e lista componentes novos
   useFocusEffect(
@@ -72,7 +67,7 @@ export default function MyAds() {
         return;
       }
       const response = await axios.delete(
-        "http://127.0.0.1:8000/api/product/destroy", //endereco
+        "http://192.168.0.18:8000/api/product/destroy", //endereco
         {
           //envia token pra api
           headers: {

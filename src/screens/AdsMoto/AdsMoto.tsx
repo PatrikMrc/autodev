@@ -149,7 +149,7 @@ export default function AdsMoto() {
         }
 
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/product/get?category_id=2",
+          "http://192.168.0.18:8000/api/product/get?category_id=2",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -171,7 +171,6 @@ export default function AdsMoto() {
 
         setAllAds([...ListAdsMoto, ...anunciosBackend]);
       } catch (error) {
-        console.error("Erro ao buscar anúncios do backend:", error);
         setAllAds(ListAdsMoto);
       }
     };
