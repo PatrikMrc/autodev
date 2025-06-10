@@ -13,11 +13,13 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useNavigation } from "expo-router";
 import { useState } from "react";
-
+import { MaskedTextInput } from "react-native-mask-text";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 export default function Detalhes({ route }) {
   const { data } = route.params;
   const navigation = useNavigation();
-
+  const [amount, setAmount] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -28,23 +30,93 @@ export default function Detalhes({ route }) {
     setDate(currentDate);
   };
 
-  const handleSchedule = () => {
-    setModalVisible(false);
-    Alert.alert(
-      "Test Drive Agendado",
-      `Veículo: ${data.name}\nData e Hora: ${date.toLocaleString()}`
-    );
+  const handleSchedule = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        Alert.alert("Erro", "Usuário não autenticado.");
+        return;
+      }
+      // formatacao para back-end receber a data de forma correta e estruturada
+      const formattedDate = date.toISOString().split("T")[0];
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/schedulling/store",
+        {
+          //tratamento dos dados a serem enviados
+          product_id: data.id,
+          date: formattedDate,
+        },
+        {
+          //envio do token para auth
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      Alert.alert("Sucesso", "Test drive agendado com sucesso!");
+      setModalVisible(false);
+    } catch (error) {
+      console.error("Erro ao agendar test drive:", error);
+      Alert.alert("Erro", "Não foi possível agendar o test drive.");
+    }
   };
 
+  const handleProposta = async () => {
+    if (!amount || isNaN(Number(amount))) {
+      Alert.alert("Erro", "Digite um valor válido para a proposta.");
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+
+      if (!token) {
+        Alert.alert("Erro", "Usuário não autenticado.");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/order/store", // endereco
+        {
+          //tratamento dos dados a serem enviados
+          amount: Number(amount),
+          product_id: data.id,
+        },
+        {
+          //envio do token para api
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      Alert.alert("Sucesso", "Proposta enviada com sucesso!");
+      setAmount("");
+    } catch (error) {
+      console.error("Erro ao enviar proposta:", error);
+      Alert.alert("Erro", "Não foi possível enviar a proposta.");
+    }
+  };
+
+  function formatarPreco(valor) {
+    const valorComDecimal = valor / 100;
+    return valorComDecimal.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={data.image} style={styles.image} />
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.value}>R$ {data.amount}</Text>
+      <Text style={styles.value}>R$ {formatarPreco(data.amount)}</Text>
 
       <View style={styles.details}>
         <Text style={styles.label}>
-          Modelo: <Text style={styles.info}>{data.model}</Text>
+          Marca: <Text style={styles.info}>{data.mark}</Text>
         </Text>
         <Text style={styles.label}>
           Localização: <Text style={styles.info}>{data.location}</Text>
@@ -59,21 +131,27 @@ export default function Detalhes({ route }) {
           Motor: <Text style={styles.info}>{data.engine}cc</Text>
         </Text>
         <Text style={styles.label}>
-          Documento: <Text style={styles.info}>{data.document}</Text>
-        </Text>
-        <Text style={styles.label}>
-          Estado: <Text style={styles.info}>{data.condition}</Text>
+          Estado: <Text style={styles.info}>{data.type}</Text>
         </Text>
       </View>
 
       <View style={styles.containerProposal}>
-        <TextInput
+        <MaskedTextInput
+          type="currency"
+          options={{
+            prefix: "R$ ",
+            decimalSeparator: ",",
+            groupSeparator: ".",
+            precision: 2,
+          }}
+          value={amount}
+          onChangeText={(text, rawValue) => {
+            setAmount(rawValue);
+          }}
           style={styles.input}
           keyboardType="numeric"
-          placeholderTextColor={"grey"}
-          placeholder="Valor da Proposta"
         />
-        <TouchableOpacity style={styles.button1}>
+        <TouchableOpacity onPress={handleProposta} style={styles.button1}>
           <Text style={styles.buttonText}>Enviar</Text>
         </TouchableOpacity>
       </View>
@@ -94,19 +172,21 @@ export default function Detalhes({ route }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Selecione Data e Hora</Text>
+            <Text style={styles.modalTitle}>Selecione Data</Text>
 
             <TouchableOpacity
               style={styles.dateButton}
               onPress={() => setShowPicker(true)}
             >
-              <Text style={styles.dateButtonText}>{date.toLocaleString()}</Text>
+              <Text style={styles.dateButtonText}>
+                {date.toLocaleDateString()}
+              </Text>
             </TouchableOpacity>
 
             {showPicker && (
               <DateTimePicker
                 value={date}
-                mode="datetime"
+                mode="date"
                 display="default"
                 onChange={handleConfirm}
               />

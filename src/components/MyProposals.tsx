@@ -1,5 +1,11 @@
 import { View, Image, TouchableOpacity, StyleSheet, Text } from "react-native";
-
+function formatarPreco(valor) {
+  const valorComDecimal = valor / 100;
+  return valorComDecimal.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
 export default function MyProposals({ myProposals }) {
   return (
     <View style={styles.container}>
@@ -10,10 +16,10 @@ export default function MyProposals({ myProposals }) {
             {myProposals.name}
           </Text>
           <Text style={{ fontSize: 14, fontWeight: 500, color: "#FF7816" }}>
-            Proposta: R$ {myProposals.propostvalue}
+            Proposta: R$ {formatarPreco(myProposals.amount)}
           </Text>
           <Text style={{ fontSize: 10, fontWeight: 500, color: "grey" }}>
-            Condição: {myProposals.condition}
+            Condição: {myProposals.type}
           </Text>
         </View>
       </View>

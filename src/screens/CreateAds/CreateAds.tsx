@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaskedTextInput } from "react-native-mask-text";
 export default function CreateAds() {
   //states para armazenar oque foi selecionado e digitado, inicializando e null ou string vazia
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,6 +24,9 @@ export default function CreateAds() {
   const [amount, setAmount] = useState("");
   const [location, setLocation] = useState("");
   const [name, setName] = useState("");
+  const [km, setKm] = useState("");
+  const [year, setYear] = useState("");
+  const [engine, setEngine] = useState("");
   const options = ["Novo", "Usado"];
   const Vehicle = ["Carros", "Motos"];
   //lista de marcas de veiculos para dropdown
@@ -66,10 +70,12 @@ export default function CreateAds() {
       !name ||
       !selectedBrand ||
       !location ||
-      !description ||
       !amount ||
       !selectedOption ||
-      !VehicleOption
+      !VehicleOption ||
+      !year ||
+      !engine ||
+      !km
     ) {
       Alert.alert("Erro", "Preencha todos os campos");
       return;
@@ -92,9 +98,11 @@ export default function CreateAds() {
           mark: selectedBrand,
           category: categoryId,
           location,
-          description,
           type: selectedOption,
           amount,
+          year,
+          km,
+          engine,
         },
         {
           //envio do token para api
@@ -104,6 +112,7 @@ export default function CreateAds() {
           },
         }
       );
+
       // tratamento de respostas da api
       if (response.status === 200 || response.status === 201) {
         Alert.alert("Sucesso", "Anúncio criado com sucesso!");
@@ -218,25 +227,59 @@ export default function CreateAds() {
         ></TextInput>
       </View>
       <View style={{ marginTop: 20 }}>
-        <Text style={styles.text}>Descrição</Text>
+        <Text style={styles.text}>Motor</Text>
         <TextInput
-          value={description}
-          onChangeText={setDescription}
-          multiline
-          numberOfLines={10}
+          placeholderTextColor={"grey"}
+          value={engine}
+          onChangeText={setEngine}
+          placeholder="Ex: 1.0 / 250cc"
           style={styles.inputs}
         ></TextInput>
       </View>
       <View style={{ marginTop: 20 }}>
-        <Text style={styles.text}>Preço</Text>
+        <Text style={styles.text}>Ano Do Veiculo</Text>
         <TextInput
           placeholderTextColor={"grey"}
-          value={amount}
-          onChangeText={setAmount}
-          keyboardType="numeric"
-          placeholder="R$"
+          value={year}
+          onChangeText={setYear}
+          placeholder="Ex: 2024"
           style={styles.inputs}
         ></TextInput>
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <Text style={styles.text}>Quilometragem Rodada</Text>
+        <MaskedTextInput
+          type="currency"
+          options={{
+            decimalSeparator: ".",
+            groupSeparator: ".",
+            precision: 3,
+          }}
+          value={km}
+          onChangeText={(text, rawValue) => {
+            setKm(rawValue);
+          }}
+          style={styles.inputs}
+          keyboardType="numeric"
+        />
+      </View>
+      <View style={{ marginTop: 20 }}>
+        <Text style={styles.text}>Preço</Text>
+        <MaskedTextInput
+          type="currency"
+          options={{
+            prefix: "R$ ",
+            decimalSeparator: ",",
+            groupSeparator: ".",
+            precision: 2,
+          }}
+          value={amount}
+          onChangeText={(text, rawValue) => {
+            setAmount(rawValue);
+          }}
+          style={styles.inputs}
+          keyboardType="numeric"
+        />
       </View>
       <View style={{ width: "100%" }}>
         <TouchableOpacity onPress={enviarAnuncio} style={styles.button}>

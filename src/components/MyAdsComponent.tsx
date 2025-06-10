@@ -8,6 +8,13 @@ import {
 } from "react-native";
 
 export default function MyAds({ myads, onDelete }) {
+  function formatarPreco(valor) {
+    const valorComDecimal = valor / 100;
+    return valorComDecimal.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
   return (
     <View style={styles.container}>
       <View style={styles.containerImgInfos}>
@@ -15,7 +22,7 @@ export default function MyAds({ myads, onDelete }) {
         <View style={styles.containerInfos}>
           <Text style={{ fontSize: 16, fontWeight: 500 }}>{myads.name}</Text>
           <Text style={{ fontSize: 14, fontWeight: 500, color: "#FF7816" }}>
-            R$ {myads.amount}
+            R$ {formatarPreco(myads.amount)}
           </Text>
           <Text style={{ fontSize: 10, fontWeight: 500, color: "grey" }}>
             Condição: {myads.type}

@@ -3,12 +3,18 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function Ads({ data, onPress }) {
   const navigation = useNavigation();
-
+  function formatarPreco(valor) {
+    const valorComDecimal = valor / 100;
+    return valorComDecimal.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPress} style={styles.button}>
         <Image style={styles.image} source={data.image} />
-        <Text style={styles.textValue}>R${data.amount}</Text>
+        <Text style={styles.textValue}>R${formatarPreco(data.amount)}</Text>
         <Text style={styles.textName}>{data.name}</Text>
       </TouchableOpacity>
     </View>

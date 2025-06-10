@@ -53,7 +53,6 @@ export default function MyAds() {
         "Erro ao buscar anúncios:",
         error.response?.data || error.message
       );
-      Alert.alert("Erro", "Erro ao carregar anúncios");
     }
   };
   //recarrega pagina e lista componentes novos
@@ -72,15 +71,15 @@ export default function MyAds() {
         Alert.alert("Erro", "Usuário não autenticado");
         return;
       }
-      const response = await axios.post(
+      const response = await axios.delete(
         "http://127.0.0.1:8000/api/product/destroy", //endereco
-        { id },
         {
           //envia token pra api
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
+          data: { id },
         }
       );
       //tratamento de retorno

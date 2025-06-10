@@ -10,16 +10,22 @@ import {
   Platform,
   Alert,
 } from "react-native";
+//para modal de agendamento
 import DateTimePicker from "@react-native-community/datetimepicker";
+//rotas
 import { useNavigation } from "expo-router";
+//dados
 import { useState } from "react";
+//token
 import AsyncStorage from "@react-native-async-storage/async-storage";
+//requisicao
 import axios from "axios";
-
+//mascara
+import { MaskedTextInput } from "react-native-mask-text";
 export default function AdsDetailsCar({ route }) {
   const navigation = useNavigation();
   const { data } = route.params;
-  const [proposta, setProposta] = useState("");
+  const [amount, setAmount] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
@@ -38,23 +44,24 @@ export default function AdsDetailsCar({ route }) {
         Alert.alert("Erro", "Usuário não autenticado.");
         return;
       }
-
-      const body = {
-        product_id: data.id, // ou product_id, conforme sua API
-        date: date.toISOString(),
-      };
+      // formatacao para back-end receber a data de forma correta e estruturada
+      const formattedDate = date.toISOString().split("T")[0];
 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/schedulling/store",
-        body,
         {
+          //tratamento dos dados a serem enviados
+          product_id: data.id,
+          date: formattedDate,
+        },
+        {
+          //envio do token para auth
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            Accept: "application/json",
           },
         }
       );
-
       Alert.alert("Sucesso", "Test drive agendado com sucesso!");
       setModalVisible(false);
     } catch (error) {
@@ -64,8 +71,7 @@ export default function AdsDetailsCar({ route }) {
   };
 
   const handleProposta = async () => {
-    console.log("ID do produto:", data.id);
-    if (!proposta || isNaN(Number(proposta))) {
+    if (!amount || isNaN(Number(amount))) {
       Alert.alert("Erro", "Digite um valor válido para a proposta.");
       return;
     }
@@ -82,7 +88,7 @@ export default function AdsDetailsCar({ route }) {
         "http://127.0.0.1:8000/api/order/store", // endereco
         {
           //tratamento dos dados a serem enviados
-          amount: Number(proposta),
+          amount: Number(amount),
           product_id: data.id,
         },
         {
@@ -93,19 +99,25 @@ export default function AdsDetailsCar({ route }) {
           },
         }
       );
-
       Alert.alert("Sucesso", "Proposta enviada com sucesso!");
-      setProposta("");
+      setAmount("");
     } catch (error) {
       console.error("Erro ao enviar proposta:", error);
       Alert.alert("Erro", "Não foi possível enviar a proposta.");
     }
   };
+  function formatarPreco(valor) {
+    const valorComDecimal = valor / 100;
+    return valorComDecimal.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image source={data.image} style={styles.image} />
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.value}>R$ {data.amount}</Text>
+      <Text style={styles.value}>R$ {formatarPreco(data.amount)}</Text>
 
       <View style={styles.details}>
         <Text style={styles.label}>
@@ -129,13 +141,20 @@ export default function AdsDetailsCar({ route }) {
       </View>
 
       <View style={styles.containerProposal}>
-        <TextInput
+        <MaskedTextInput
+          type="currency"
+          options={{
+            prefix: "R$ ",
+            decimalSeparator: ",",
+            groupSeparator: ".",
+            precision: 2,
+          }}
+          value={amount}
+          onChangeText={(text, rawValue) => {
+            setAmount(rawValue);
+          }}
           style={styles.input}
-          placeholderTextColor={"grey"}
-          placeholder="Valor da Proposta"
           keyboardType="numeric"
-          value={proposta}
-          onChangeText={setProposta}
         />
         <TouchableOpacity onPress={handleProposta} style={styles.button1}>
           <Text style={styles.buttonText}>Enviar</Text>
@@ -157,19 +176,21 @@ export default function AdsDetailsCar({ route }) {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Selecione Data e Hora</Text>
+            <Text style={styles.modalTitle}>Selecione a Data</Text>
 
             <TouchableOpacity
               style={styles.dateButton}
               onPress={() => setShowPicker(true)}
             >
-              <Text style={styles.dateButtonText}>{date.toLocaleString()}</Text>
+              <Text style={styles.dateButtonText}>
+                {date.toLocaleDateString()}
+              </Text>
             </TouchableOpacity>
 
             {showPicker && (
               <DateTimePicker
                 value={date}
-                mode="datetime"
+                mode="date"
                 display="default"
                 onChange={handleConfirm}
               />

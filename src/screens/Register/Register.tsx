@@ -10,21 +10,23 @@ import {
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-
+//sistema de mascaras para celular, cpf, cartao e etc
+import { MaskedTextInput } from "react-native-mask-text";
 export default function Cadastro() {
   const navigation = useNavigation();
+  //armazenamento de dados em states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [password_confirmation, setPassword_confirmation] = useState("");
-
+  //verificacao se todos os campos foram preenchidos
   const handleCadastro = async () => {
     if (!name || !email || !phone || !password || !password_confirmation) {
       Alert.alert("Erro", "Preencha todos os campos.");
       return;
     }
-
+    //verifica se os 2 campos de senha tem os mesmos values
     if (password !== password_confirmation) {
       Alert.alert("Erro", "As senhas não coincidem.");
       return;
@@ -48,7 +50,7 @@ export default function Cadastro() {
       Alert.alert("Erro", "Não foi possível concluir o cadastro.");
     }
   };
-
+  //estrutura
   return (
     <View style={styles.container}>
       <Image
@@ -72,12 +74,13 @@ export default function Cadastro() {
           placeholder="E-mail"
           style={styles.textInput}
         ></TextInput>
-        <TextInput
+        <MaskedTextInput
+          mask="(99) 99999-9999"
           value={phone}
-          onChangeText={setPhone}
+          onChangeText={(text, rawText) => setPhone(rawText)}
           placeholder="Telefone"
           style={styles.textInput}
-        ></TextInput>
+        />
         <TextInput
           value={password}
           onChangeText={setPassword}

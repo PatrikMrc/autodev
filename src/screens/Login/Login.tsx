@@ -51,6 +51,8 @@ export default function Login() {
         <View style={styles.containerForm}>
           <Text style={styles.text}>E-Mail</Text>
           <TextInput
+            placeholderTextColor={"grey"}
+            placeholder="usuario@gmail.com"
             autoCapitalize="none"
             keyboardType="email-address"
             value={email}
@@ -62,7 +64,6 @@ export default function Login() {
           <Text style={styles.text}>Senha</Text>
           <TextInput
             placeholderTextColor={"grey"}
-            placeholder="6 Caracteres"
             secureTextEntry
             value={password}
             onChangeText={setPassword}
